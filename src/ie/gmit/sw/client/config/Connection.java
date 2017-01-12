@@ -63,6 +63,7 @@ public class Connection {
 			in.close();
 			out.close();
 			requestSocket.close();
+			p.clearClientConfig();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
