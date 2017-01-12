@@ -20,7 +20,11 @@ public class Connection {
 	public Connection(){}
 	
 	public Boolean isConnected(){
-		return requestSocket.isConnected();
+		try{
+			if(requestSocket.isConnected())
+				return true;
+		}catch(Exception e){}
+		return false;
 	}
 	// Creating a socket to connect to the server
 	public void connect(){
@@ -28,17 +32,18 @@ public class Connection {
 		clientConfig = p.getClientConfig();
 		try {
 			requestSocket = new Socket(clientConfig.get("server-host"), Integer.parseInt(clientConfig.get("server-port")));
+			in = new ObjectInputStream(requestSocket.getInputStream());
+			out = new ObjectOutputStream(requestSocket.getOutputStream());
 		} catch (UnknownHostException e) {
 			System.err.println("Error: Unknown Host.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Socket Connected to Server");
 	}
 	// Communicating with the server
 	public void sendMessage(String msg){
 		try{
-			out = new ObjectOutputStream(requestSocket.getOutputStream());
+			//out = new ObjectOutputStream(requestSocket.getOutputStream());
 			out.writeObject(msg);
 			out.flush();
 		}
@@ -48,7 +53,7 @@ public class Connection {
 	}
 	public String receiveMessage(){
 		try {
-			in = new ObjectInputStream(requestSocket.getInputStream());
+			//in = new ObjectInputStream(requestSocket.getInputStream());
 			msg = (String)in.readObject();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
