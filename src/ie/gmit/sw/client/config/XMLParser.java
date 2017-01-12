@@ -3,7 +3,6 @@ package ie.gmit.sw.client.config;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -24,10 +23,9 @@ public class XMLParser implements Parsable {
 	public void parseFile(File file){
 		/* DOM - Document Object Model.
 		 * Using the DOM to parse the XML document, then store an in memory tree representation of
-	     * the XML document. From there, extract meaningful pieces of information,
+		 * the XML document. From there, extract meaningful pieces of information,
 		 * in this case, extract the set of values required to interact with the remote server.
-		 */
-		//HashMap<String, String> clientConfig =new HashMap<String, String>();  
+		 */	
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
@@ -55,13 +53,7 @@ public class XMLParser implements Parsable {
 	public HashMap<String, String> getClientConfig() {
 		return clientConfig;
 	}
-	
-	public static void main(String[] args){
-		XMLParser p = new XMLParser();
-		p.parseFile(new File("client-config.xml"));
-		HashMap<String, String> clientConfig = p.getClientConfig();
-		 for(Entry<String, String> m:clientConfig.entrySet()){  
-			   System.out.println(m.getKey()+" "+m.getValue());  
-			  }  
+	public void clearClientConfig() {
+		clientConfig.clear();
 	}
 }

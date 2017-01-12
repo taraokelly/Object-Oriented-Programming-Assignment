@@ -13,34 +13,58 @@ public class Connection {
 	private HashMap<String, String> clientConfig =new HashMap<String, String>();
 	private XMLParser p = new XMLParser();
 	private Socket requestSocket;
+	private ObjectOutputStream out;
+ 	private ObjectInputStream in;
+	private String msg;
 	
 	public Connection(){}
 	
-	//creating a socket to connect to the server
+	public Boolean isConnected(){
+		return requestSocket.isConnected();
+	}
+	// Creating a socket to connect to the server
 	public void connect(){
 		p.parseFile(new File("client-config.xml"));
-		this.clientConfig = p.getClientConfig();
+		clientConfig = p.getClientConfig();
 		try {
-			this.requestSocket = new Socket(this.clientConfig.get("server-host"), Integer.parseInt(this.clientConfig.get("server-port")));
-			
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
+			requestSocket = new Socket(clientConfig.get("server-host"), Integer.parseInt(clientConfig.get("server-port")));
 		} catch (UnknownHostException e) {
+			System.err.println("Error: Unknown Host.");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Socket Connected to Server");
+	}
+	// Communicating with the server
+	public void sendMessage(String msg){
+		try{
+			out = new ObjectOutputStream(requestSocket.getOutputStream());
+			out.writeObject(msg);
+			out.flush();
+		}
+		catch(IOException ioException){
+			ioException.printStackTrace();
+		}
+	}
+	public String receiveMessage(){
+		try {
+			in = new ObjectInputStream(requestSocket.getInputStream());
+			msg = (String)in.readObject();
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return msg;
 	}
 	// Closing connection
 	public void disconnect(){
 		try {
-			this.requestSocket.close();
+			in.close();
+			out.close();
+			requestSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	public static void main(String[] args){
-		Connection c = new Connection();
-		c.connect();
 	}
 }
