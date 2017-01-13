@@ -21,31 +21,37 @@ public class UI {
 	}
 	public void execute(String request){
 		if(request.equals("1")&&(c.isConnected()==false)){
-			c.connect();
+			c.connect();//connecting to server
 		}
 		else if(request.equals("2")&&(c.isConnected()==true)){
-			c.sendMessage(request);
-			response = c.receiveMessage();
+			c.sendMessage(request);//sending option
+			response = c.receiveMessage();//receiving listing
 			System.out.println(response);
 		}
 		else if(request.equals("3")&&c.isConnected()==true){
-			c.sendMessage(request);
-			response = c.receiveMessage();
+			c.sendMessage(request);//sending option
+			response = c.receiveMessage();//receiving message prompting user to enter which file they want
 			System.out.println(response);
-			System.out.println("Let's pretend the file downloaded for now");
-			//c.sendMessage(request);
-			//receive and download file
+			request = in.nextLine();//giving option
+			c.sendMessage(request);
+			response = c.receiveMessage();//receiving validity of option
+			System.out.println(response);
+			if(response.equals("Sending file...")){//if option is valid
+				c.sendMessage("Ready for download.");
+				c.receiveFile();
+			}
 		}
 		else if (request.equals("4")&&c.isConnected()==true){
 			c.sendMessage(request);
 			response = c.receiveMessage();
 			System.out.println(response);
 			c.disconnect();
+			in.close();
 		}	
-		else if(request.equals("1")&&(c.isConnected()==true)){
+		else if(request.equals("1")&&(c.isConnected()==true)){//to stop users from connecting again unnecessarily, and without closing resources 
 			System.out.println("Looks like you're already connected. Please select another option.\n");
 		}
-		else if ((request.equals("2")|request.equals("3"))&&c.isConnected()==false){
+		else if ((request.equals("2")|request.equals("3"))&&c.isConnected()==false){//to stop users from querying when not connected to the server 
 			System.out.println("Not connected to the server. Connect to the server to undergo this action.\n");
 		}
 	}

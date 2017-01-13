@@ -1,7 +1,10 @@
 package ie.gmit.sw.client.config;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -34,7 +37,7 @@ public class Connection {
 			requestSocket = new Socket(clientConfig.get("server-host"), Integer.parseInt(clientConfig.get("server-port")));
 			in = new ObjectInputStream(requestSocket.getInputStream());
 			out = new ObjectOutputStream(requestSocket.getOutputStream());
-			System.out.println("Connected to: " + clientConfig.get("server-host") + ", on port: "+ clientConfig.get("server-port")+"\n");
+			System.out.println("Connected to: " + clientConfig.get("server-host") + ", on port: "+ clientConfig.get("server-port")+".\n");
 		} catch (UnknownHostException e) {
 			System.err.println("Error: Unknown Host.");
 		} catch (IOException e) {
@@ -60,6 +63,26 @@ public class Connection {
 			e.printStackTrace();
 		}
 		return msg;
+	}
+	public void receiveFile(){
+		try {
+			String fileName = (String) in.readObject();
+			out.writeObject("recieved");
+			long fileLength = (Long) in.readObject();
+			byte[] bytes = new byte[(int) fileLength];
+			InputStream is = requestSocket.getInputStream();
+			FileOutputStream fos = new FileOutputStream("./downloads/"+fileName);
+			BufferedOutputStream bos = new BufferedOutputStream(fos);
+			int bytesRead = is.read(bytes, 0, bytes.length);
+			bos.write(bytes, 0, bytesRead);
+			bos.flush();
+			bos.close();
+			System.out.println("Download Complete!\n");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	// Closing connection
 	public void disconnect(){

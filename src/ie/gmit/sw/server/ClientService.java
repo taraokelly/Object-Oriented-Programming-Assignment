@@ -1,12 +1,11 @@
 package ie.gmit.sw.server;
 
-import java.io.File;
 import java.net.Socket;
 
 public class ClientService extends ClientServiceable {
 	private int clientID; 
 	private String message;
-	private String files;
+	private FileListing fl = new FileListing();
 
 	public ClientService(Socket s, int i){
 		super(s);
@@ -17,15 +16,9 @@ public class ClientService extends ClientServiceable {
 		
 		getStreams();
 		
-		//File curDir = new File(".");
-		//code testing
-		File dir = new File("./files-available-for-download");
-        getAllFiles(dir);
-        System.out.println(files);
-		
 		do{
 			message = receiveMessage();
-			sendMessage("Your answer was " + message);
+			execute(message);
 			
 		}while(!message.equals("4"));
 		
@@ -34,13 +27,26 @@ public class ClientService extends ClientServiceable {
 		disconnect();
 		
 	}
-	public void getAllFiles(File dir) {
-		files = "File Listing:\n";
-        File[] filesList = dir.listFiles();
-        for(File f : filesList){
-            if(f.isFile()&&f.getName().charAt(0)!='.'&&(f.getName().equals("client-config.xml")==false)){
-                files += f.getName();
-            	}//if
-            }//for
-        }//method
+	public void execute(String request){
+		switch(message){
+		case "2":
+			sendMessage(fl.getAllFiles());
+			break;
+		case "3":
+			sendMessage("Enter the number of the file you wish to upload:");
+			message = receiveMessage();
+			if(fl.getValue(Integer.parseInt(message))!=null){
+				sendMessage("Sending file...");
+				String response = receiveMessage();
+				System.out.println(response);
+				sendFile(fl.getValue(Integer.parseInt(message)));
+			}else{
+				sendMessage("Error: invalid option.");
+			}
+			break;
+		case "4":
+			sendMessage("Goodbye!");
+			break;
+		}
 	}
+}
