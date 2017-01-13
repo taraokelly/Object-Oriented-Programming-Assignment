@@ -20,7 +20,7 @@ public class UI {
 		}
 	}
 	public void execute(String request){
-		if(request.equals("1")){
+		if(request.equals("1")&&(c.isConnected()==false)){
 			c.connect();
 		}
 		else if(request.equals("2")&&(c.isConnected()==true)){
@@ -32,7 +32,7 @@ public class UI {
 			c.sendMessage(request);
 			response = c.receiveMessage();
 			System.out.println(response);
-			System.out.println("Let's pretend the file download for now");
+			System.out.println("Let's pretend the file downloaded for now");
 			//c.sendMessage(request);
 			//receive and download file
 		}
@@ -41,6 +41,12 @@ public class UI {
 			response = c.receiveMessage();
 			System.out.println(response);
 			c.disconnect();
+		}	
+		else if(request.equals("1")&&(c.isConnected()==true)){
+			System.out.println("Looks like you're already connected. Please select another option.\n");
+		}
+		else if ((request.equals("2")|request.equals("3"))&&c.isConnected()==false){
+			System.out.println("Not connected to the server. Connect to the server to undergo this action.\n");
 		}
 	}
 }

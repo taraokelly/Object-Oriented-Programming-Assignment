@@ -6,6 +6,7 @@ import java.net.Socket;
 public class ClientService extends ClientServiceable {
 	private int clientID; 
 	private String message;
+	private String files;
 
 	public ClientService(Socket s, int i){
 		super(s);
@@ -15,6 +16,12 @@ public class ClientService extends ClientServiceable {
 		System.out.println("Accepted Client : ID - " + clientID + " : Address - " + getClientSocket().getInetAddress().getHostName());
 		
 		getStreams();
+		
+		//File curDir = new File(".");
+		//code testing
+		File dir = new File("./files-available-for-download");
+        getAllFiles(dir);
+        System.out.println(files);
 		
 		do{
 			message = receiveMessage();
@@ -27,13 +34,13 @@ public class ClientService extends ClientServiceable {
 		disconnect();
 		
 	}
-	public void getAllFiles(File curDir) {
-
-        File[] filesList = curDir.listFiles();
+	public void getAllFiles(File dir) {
+		files = "File Listing:\n";
+        File[] filesList = dir.listFiles();
         for(File f : filesList){
-            if(f.isFile()&&f.getName().charAt(0)!='.'){
-                System.out.println(f.getName());
-            }
-        }
+            if(f.isFile()&&f.getName().charAt(0)!='.'&&(f.getName().equals("client-config.xml")==false)){
+                files += f.getName();
+            	}//if
+            }//for
+        }//method
 	}
-}

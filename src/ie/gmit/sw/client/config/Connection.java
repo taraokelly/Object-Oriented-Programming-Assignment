@@ -34,6 +34,7 @@ public class Connection {
 			requestSocket = new Socket(clientConfig.get("server-host"), Integer.parseInt(clientConfig.get("server-port")));
 			in = new ObjectInputStream(requestSocket.getInputStream());
 			out = new ObjectOutputStream(requestSocket.getOutputStream());
+			System.out.println("Connected to: " + clientConfig.get("server-host") + ", on port: "+ clientConfig.get("server-port")+"\n");
 		} catch (UnknownHostException e) {
 			System.err.println("Error: Unknown Host.");
 		} catch (IOException e) {
