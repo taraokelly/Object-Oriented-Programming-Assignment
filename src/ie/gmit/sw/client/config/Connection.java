@@ -11,7 +11,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 
-public class Connection {
+public class Connection implements Connectable{
 	
 	private HashMap<String, String> clientConfig =new HashMap<String, String>();
 	private XMLParser p = new XMLParser();
