@@ -27,6 +27,7 @@ public abstract class ClientServiceable extends Thread{
 		try{
 			out.writeObject(msg);
 			out.flush();
+			System.out.println("Server:" + msg);
 		}
 		catch(IOException ioException){
 			ioException.printStackTrace();
@@ -36,6 +37,7 @@ public abstract class ClientServiceable extends Thread{
 		String msg = "";
 		try {
 			msg = (String)in.readObject();
+			System.out.println("Client:" + msg);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
