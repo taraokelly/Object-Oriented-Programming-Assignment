@@ -43,7 +43,6 @@ public class Connection {
 	// Communicating with the server
 	public void sendMessage(String msg){
 		try{
-			//out = new ObjectOutputStream(requestSocket.getOutputStream());
 			out.writeObject(msg);
 			out.flush();
 		}
@@ -53,7 +52,6 @@ public class Connection {
 	}
 	public String receiveMessage(){
 		try {
-			//in = new ObjectInputStream(requestSocket.getInputStream());
 			msg = (String)in.readObject();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
