@@ -10,7 +10,7 @@ public class ClientListener extends Thread{
 	 private ServerSocket SS;
 	 private String path;
 	 private volatile ArrayList<ClientService> threads = new ArrayList<ClientService>();
-	 private volatile boolean running = true, threadsFin = false;
+	 private volatile boolean running = true;
 	 
 	public ClientListener(ServerSocket SS, String path){	
 		this.SS = SS;
@@ -32,17 +32,15 @@ public class ClientListener extends Thread{
 					System.err.println("Error: Communication Fault:" + e.getMessage());
 				}
 			}
-			while(threadsFin==false){
-				 threadsFin=true;
-				 for (ClientService t: threads){
-					  if((t).isAlive())
-						  threadsFin=false;
-				 }//for
-			 }//while	
 			try {
+				for (ClientService t: threads){
+					t.join();
+				}
 				SS.close();//close socket when loop terminates
 			} catch (IOException e) {
 				System.err.println("Error: Closing Socket. " + e.getMessage());
+			} catch (InterruptedException e) {
+				System.err.println("Error: " + e.getMessage());
 			}
 			
 		}
