@@ -24,7 +24,7 @@ public abstract class ClientServiceable extends Thread{
 			out = new ObjectOutputStream(clientSocket.getOutputStream());
 			in = new ObjectInputStream(clientSocket.getInputStream());
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.err.println("Error: " + e.getMessage());
 		}
 	}
 	public void sendMessage(String msg)

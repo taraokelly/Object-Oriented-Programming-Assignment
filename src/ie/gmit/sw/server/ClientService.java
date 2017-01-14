@@ -5,11 +5,12 @@ import java.net.Socket;
 public class ClientService extends ClientServiceable {
 	private int clientID; 
 	private String message;
-	private FileListing fl = new FileListing();
+	private FileListing fl;
 
-	public ClientService(Socket s, int i){
+	public ClientService(Socket s, int i, String path){
 		super(s);
 		this.clientID = i;
+		this.fl = new FileListing(path);
 	}
 	public void run(){
 		System.out.println("Accepted Client : ID - " + clientID + " : Address - " + getClientSocket().getInetAddress().getHostName());
