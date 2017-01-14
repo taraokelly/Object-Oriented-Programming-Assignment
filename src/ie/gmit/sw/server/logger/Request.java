@@ -21,6 +21,6 @@ public class Request implements Serializable {
 	// Methods
 	@Override
 	public String toString() {
-		return String.format("[%s] %s requested by %s %tR %<tp on %<te %<tB %<tY", status.toUpperCase(), request, host, date);
+		return String.format("[%s] %s requested by %s %tR %<tp on %<te %<tB %<tY", status, request, host, date);
 	}
 }

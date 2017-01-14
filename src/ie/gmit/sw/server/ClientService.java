@@ -19,17 +19,13 @@ public class ClientService extends ClientServiceable{
 	}
 	public void run(){
 		System.out.println("Accepted Client : ID - " + clientID + " : Address - " + getClientSocket().getInetAddress().getHostName());
-		
-		getStreams();
-		
+		getStreams();	
 		do{
 			message = receiveMessage();
 			execute(message);
 			
 		}while(!message.equals("4"));
-		
 		System.out.println("Ending Client : ID - " + clientID + " : Address - " + getClientSocket().getInetAddress().getHostName());
-		
 		disconnect();
 		
 	}
