@@ -2,9 +2,8 @@ package ie.gmit.sw;
 
 import java.io.File;
 import java.net.ServerSocket;
-import java.net.Socket;
 
-import ie.gmit.sw.server.ClientService;
+import ie.gmit.sw.server.ClientListener;
 
 public class Server{
 	 public static void main(String[] args){
@@ -16,15 +15,10 @@ public class Server{
 					try{
 						port = Integer.parseInt(args[0]);
 					    ServerSocket SS = new ServerSocket(port);
-					    int id = 0;
-					    /* infinite loop - always looking for connections
-					     * that accepts the socket connection and starts a new thread
-					     */
-					    while (true) {
-					        Socket clientSocket = SS.accept();
-					        ClientService cThread = new ClientService(clientSocket, id++, path);
-					        cThread.start();    
-					      }//while
+					    Thread server = new Thread(new ClientListener(SS, path)); //new Client Listener to listen for requests
+						server.setPriority(Thread.MAX_PRIORITY); //Ask the Thread Scheduler to run this thread as a priority
+						server.start();
+					    
 					 } catch (NumberFormatException e) {
 							System.err.println("Error: Invalid Arguements. The Port Number Must Be an Integer.");
 					 }catch(Exception e){

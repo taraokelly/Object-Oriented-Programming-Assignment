@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public abstract class ClientServiceable extends Thread{
+public abstract class ClientServiceable{
 	private Socket clientSocket; 
 	private ObjectOutputStream out;
 	private ObjectInputStream in;

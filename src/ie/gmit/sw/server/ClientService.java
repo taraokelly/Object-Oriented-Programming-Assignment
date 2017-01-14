@@ -2,7 +2,7 @@ package ie.gmit.sw.server;
 
 import java.net.Socket;
 
-public class ClientService extends ClientServiceable {
+public class ClientService extends ClientServiceable implements Runnable {
 	private int clientID; 
 	private String message;
 	private FileListing fl;
