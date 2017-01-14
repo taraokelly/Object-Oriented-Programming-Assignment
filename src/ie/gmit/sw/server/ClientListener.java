@@ -5,16 +5,22 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
+
+import ie.gmit.sw.server.logger.PoisonRequest;
+import ie.gmit.sw.server.logger.Request;
 
 public class ClientListener extends Thread{ 
 	 private ServerSocket SS;
+	 private BlockingQueue<Request> loggingQueue;
 	 private String path;
 	 private volatile ArrayList<ClientService> threads = new ArrayList<ClientService>();
 	 private volatile boolean running = true;
 	 
-	public ClientListener(ServerSocket SS, String path){	
+	public ClientListener(ServerSocket SS, BlockingQueue<Request> loggingQueue, String path){	
 		this.SS = SS;
 		this.path = path;
+		this.loggingQueue = loggingQueue;
 	}
 		public void run() {
 			Thread serverList = new Thread(new ServerListener()); 
@@ -26,16 +32,20 @@ public class ClientListener extends Thread{
 			 while (running) {
 			 try{
 					Socket clientSocket = SS.accept();
-			        ClientService cThread = new ClientService(clientSocket, id++, path);
+			        ClientService cThread = new ClientService(clientSocket, id++, path, loggingQueue);
 			        cThread.run();    
 				} catch (IOException e) { 
 					System.err.println("Error: Communication Fault:" + e.getMessage());
 				}
 			}
+			 /* try - wait for ClientService threads to finish.
+			  * Then close ServerSocket
+			  */
 			try {
 				for (ClientService t: threads){
 					t.join();
 				}
+				loggingQueue.put(new PoisonRequest("", "", ""));//"Poison" blocking queue
 				SS.close();//close socket when loop terminates
 			} catch (IOException e) {
 				System.err.println("Error: Closing Socket. " + e.getMessage());
