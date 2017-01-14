@@ -1,5 +1,7 @@
 package ie.gmit.sw.client.config;
-
+/* Tara O'Kelly - G00322214
+ * Object Oriented Programming, Third Year, Software Development, GMIT.
+ */
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -11,17 +13,18 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 
-public class Connection implements Connectable{
-	
+public class Connection implements Connectable{ //IS-A Connectable
+	// Variables
 	private HashMap<String, String> clientConfig =new HashMap<String, String>();
-	private XMLParser p = new XMLParser();
+	private XMLParser p = new XMLParser(); //HAS-A XMLParser - Full Composition
 	private Socket requestSocket;
 	private ObjectOutputStream out;
  	private ObjectInputStream in;
 	private String msg;
-	
+	// Constructor
 	public Connection(){}
-	
+	// Methods
+	// Check connection.
 	public Boolean isConnected(){
 		try{
 			if(requestSocket.isConnected())
@@ -29,7 +32,7 @@ public class Connection implements Connectable{
 		}catch(Exception e){}
 		return false;
 	}
-	// Creating a socket to connect to the server
+	// Creating a socket to connect to the server.
 	public void connect(){
 		p.parseFile(new File("client-config.xml"));
 		clientConfig = p.getClientConfig();
@@ -44,7 +47,7 @@ public class Connection implements Connectable{
 			e.printStackTrace();
 		}
 	}
-	// Communicating with the server
+	// Communicating with the server.
 	public void sendMessage(String msg){
 		try{
 			out.writeObject(msg);
@@ -84,7 +87,7 @@ public class Connection implements Connectable{
 			e.printStackTrace();
 		}
 	}
-	// Closing connection
+	// Closing connection.
 	public void disconnect(){
 		try {
 			in.close();

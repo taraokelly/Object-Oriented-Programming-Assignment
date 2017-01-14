@@ -1,5 +1,7 @@
 package ie.gmit.sw.server;
-
+/* Tara O'Kelly - G00322214
+ * Object Oriented Programming, Third Year, Software Development, GMIT.
+ */
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,24 +12,24 @@ import java.util.concurrent.BlockingQueue;
 import ie.gmit.sw.server.logger.PoisonRequest;
 import ie.gmit.sw.server.logger.Request;
 
-public class ClientListener extends Thread{ 
+public class ClientListener extends Thread{ //IS-A Thread.
 	 private ServerSocket SS;
-	 private BlockingQueue<Request> loggingQueue;
+	 private BlockingQueue<Request> loggingQueue;//HAS-A Request - Aggregation - defined at class level, however ClientListener shares access with other classes.
 	 private String path;
-	 private volatile ArrayList<ClientService> threads = new ArrayList<ClientService>();
-	 private volatile boolean running = true;
+	 private volatile ArrayList<ClientService> threads = new ArrayList<ClientService>();//HAS-A ClientService - Full Composition
+	 private volatile boolean running = true;// Variable will never be cached
 	 
 	public ClientListener(ServerSocket SS, BlockingQueue<Request> loggingQueue, String path){	
 		this.SS = SS;
 		this.path = path;
-		this.loggingQueue = loggingQueue;
+		this.loggingQueue = loggingQueue; 
 	}
 		public void run() {
 			Thread serverList = new Thread(new ServerListener()); 
 			serverList.start();
 			int id = 0; //client ID
 			/* loop - always looking for connections
-		     * that accepts the socket connection and starts a new thread
+		     * that accepts the socket connection and starts a new thread.
 		     */
 			 while (running) {
 			 try{
@@ -39,14 +41,15 @@ public class ClientListener extends Thread{
 				}
 			}
 			 /* try - wait for ClientService threads to finish.
-			  * Then close ServerSocket
+			  * Then close ServerSocket.
 			  */
 			try {
 				for (ClientService t: threads){
 					t.join();
 				}
-				loggingQueue.put(new PoisonRequest("", "", ""));//"Poison" blocking queue
-				SS.close();//close socket when loop terminates
+				loggingQueue.put(new PoisonRequest("", "", ""));//"Poison" blocking queue.
+				//Now HAS-A PoisinRequest - Dependancy
+				SS.close();// Close socket when loop terminates.
 			} catch (IOException e) {
 				System.err.println("Error: Closing Socket. " + e.getMessage());
 			} catch (InterruptedException e) {

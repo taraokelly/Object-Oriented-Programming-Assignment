@@ -1,5 +1,7 @@
 package ie.gmit.sw.server;
-
+/* Tara O'Kelly - G00322214
+ * Object Oriented Programming, Third Year, Software Development, GMIT.
+ */
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,18 +10,20 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-
-public abstract class ClientServiceable extends Thread{
+//This class contains the methods to communicate with a Client to offer the Server's services.
+public abstract class ClientServiceable extends Thread{ //IS-A Thread
+	// Variables
 	private Socket clientSocket; 
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
 	private BufferedInputStream bin;
-	
+	// Constructor
 	public ClientServiceable(Socket s) {
 		this.clientSocket = s;
 	}
+	// Implementation of run will be defined by the inheriting class.
 	public abstract void run();
-	public void getStreams(){
+	public void getStreams(){ // Acquire necessary streams for communication.
 		try {
 			out = new ObjectOutputStream(clientSocket.getOutputStream());
 			in = new ObjectInputStream(clientSocket.getInputStream());
@@ -27,7 +31,7 @@ public abstract class ClientServiceable extends Thread{
 			System.err.println("Error: " + e.getMessage());
 		}
 	}
-	public void sendMessage(String msg)
+	public void sendMessage(String msg)// Send message.
 	{
 		try{
 			out.writeObject(msg);
@@ -38,7 +42,7 @@ public abstract class ClientServiceable extends Thread{
 			ioException.printStackTrace();
 		}
 	}
-	public void sendFile(String temp)
+	public void sendFile(String temp) // Send file.
 	{
 		try{
 			System.out.println("creating new file");
@@ -61,7 +65,7 @@ public abstract class ClientServiceable extends Thread{
 			e.printStackTrace();
 		}
 	}
-	public String receiveMessage(){
+	public String receiveMessage(){ // Receive Message and print to console.
 		String msg = "";
 		try {
 			msg = (String)in.readObject();
@@ -73,10 +77,10 @@ public abstract class ClientServiceable extends Thread{
 		}
 		return msg;
 		}
-	public Socket getClientSocket() {
+	public Socket getClientSocket() { //Getter.
 		return clientSocket;
 	}
-	public void disconnect(){
+	public void disconnect(){ // Close Connections.
 		try {
 			in.close();
 			out.close();

@@ -1,5 +1,7 @@
 package ie.gmit.sw.client.config;
-
+/* Tara O'Kelly - G00322214
+ * Object Oriented Programming, Third Year, Software Development, GMIT.
+ */
 import java.io.File;
 import java.io.IOException;
 
