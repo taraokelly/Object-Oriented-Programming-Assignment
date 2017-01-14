@@ -9,7 +9,7 @@ public class UI {
 	String option = "", response;
 	Connection c = new Connection();
 	
-	UI(){}
+	public UI(){}
 	
 	public void run(){	
 		while(!option.equals("4")){
