@@ -3,12 +3,14 @@ package ie.gmit.sw.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ClientListener extends Thread{ 
 	 private ServerSocket SS;
 	 private String path;
-	 private volatile boolean running = true;
+	 private volatile ArrayList<ClientService> threads = new ArrayList<ClientService>();
+	 private volatile boolean running = true, threadsFin = false;
 	 
 	public ClientListener(ServerSocket SS, String path){	
 		this.SS = SS;
@@ -30,6 +32,13 @@ public class ClientListener extends Thread{
 					System.err.println("Error: Communication Fault:" + e.getMessage());
 				}
 			}
+			while(threadsFin==false){
+				 threadsFin=true;
+				 for (ClientService t: threads){
+					  if((t).isAlive())
+						  threadsFin=false;
+				 }//for
+			 }//while	
 			try {
 				SS.close();//close socket when loop terminates
 			} catch (IOException e) {
@@ -44,11 +53,11 @@ public class ClientListener extends Thread{
 				public void run() {
 					while(message.equalsIgnoreCase("EXIT")==false){
 						message = in.nextLine();
-						}
+						}//while
 					System.out.println("Terminating...");
 					running = false;//stop Listener loop from accepting socket requests when current loop is finished
 					in.close();//close scanner
-					}
+					}//run
 					
-				}
-	}
+				}//ServerListener
+}
