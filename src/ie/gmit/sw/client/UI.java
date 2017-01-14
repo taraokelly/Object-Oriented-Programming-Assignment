@@ -13,7 +13,6 @@ public class UI {
 	
 	public void run(){	
 		while(!option.equals("4")){
-			System.out.println("java -cp .:./oop.jar ie.gmit.sw.Client");
 			System.out.println("Enter:\n1 - To Connect to Server\n2 - To Print File Listing\n3 - To Download File\n4 - To Quit");
 			option = in.nextLine();
 			execute(option);
