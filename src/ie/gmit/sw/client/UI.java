@@ -53,5 +53,8 @@ public class UI {
 		else if ((request.equals("2")|request.equals("3"))&&c.isConnected()==false){//to stop users from querying when not connected to the server 
 			System.out.println("Not connected to the server. Connect to the server to undergo this action.\n");
 		}
+		else{
+			System.out.println("Invalid Option.\n");
+		}
 	}
 }
