@@ -74,7 +74,7 @@ public class Connection implements Connectable{ //IS-A Connectable
 			long fileLength = (Long) in.readObject();
 			byte[] bytes = new byte[(int) fileLength];
 			InputStream is = requestSocket.getInputStream();
-			FileOutputStream fos = new FileOutputStream("./downloads/"+fileName);
+			FileOutputStream fos = new FileOutputStream(clientConfig.get("download-dir") +fileName);
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			int bytesRead = is.read(bytes, 0, bytes.length);
 			bos.write(bytes, 0, bytesRead);

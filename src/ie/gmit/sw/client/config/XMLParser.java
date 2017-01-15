@@ -38,6 +38,7 @@ public class XMLParser extends XMLParsable {
 					getClientConfig().put("server-host", element.getElementsByTagName("server-host").item(0).getTextContent());
 					getClientConfig().put("server-port", element.getElementsByTagName("server-port").item(0).getTextContent());
 					getClientConfig().put("download-dir", element.getElementsByTagName("download-dir").item(0).getTextContent());
+					new File(element.getElementsByTagName("download-dir").item(0).getTextContent());
 				}
 			}
 		} catch (ParserConfigurationException e) {
