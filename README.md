@@ -31,7 +31,7 @@ in this module. The concepts include:
 </client-config>
 ```
 
-* Ever request from the client should be added to a blocking queue and logged in a text file ahering to the following format: [INFO | ERROR | WARNING]<command> requested by <client ip address> at <date time>
+* Every request from the client should be added to a blocking queue and logged in a text file ahering to the following format: [INFO | ERROR | WARNING] command requested by client ip address at date time
 * Use java.oi.File to get directory listing and use java.io.FileWriter to log requests to the file.
 
 **Client Side:**
